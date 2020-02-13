@@ -1,8 +1,10 @@
 package com.alexvit.revolutrates
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +38,7 @@ class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapt
     private var item: ExchangeRateItem? = null
 
     init {
-        itemView.setOnClickListener { amount.requestFocus() }
+        itemView.setOnClickListener { amount.focusAndShowKeyboard() }
     }
 
     fun bind(item: ExchangeRateItem) {
@@ -49,6 +51,12 @@ class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapt
 
     private fun EditText.moveCursorToEnd() {
         post { setSelection(text.length) }
+    }
+
+    private fun EditText.focusAndShowKeyboard() {
+        requestFocus()
+        (context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
+            ?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
 
 }
