@@ -1,7 +1,7 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.ratelist
 
-import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
+import com.alexvit.revolutrates.currency.Currency
 
 data class ExchangeRateItem(val currency: Currency, val amount: Double) {
 

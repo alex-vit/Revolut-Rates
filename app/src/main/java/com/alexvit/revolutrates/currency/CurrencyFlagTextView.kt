@@ -1,12 +1,14 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.currency
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.TextView
+import com.alexvit.revolutrates.R
 
 class CurrencyFlagTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : TextView(context, attrs, defStyleAttr), CurrencyFlagView {
+) : TextView(context, attrs, defStyleAttr),
+    CurrencyFlagView {
 
     companion object {
         private val CODE_TO_FLAG = mapOf(

@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.currency
 
 interface CurrencyFlagView {
 

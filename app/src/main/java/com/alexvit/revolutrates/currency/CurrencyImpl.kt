@@ -1,11 +1,12 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.currency
 
 import androidx.annotation.Size
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 
-class CurrencyImpl(@Size(value = 3) currencyIsoCode: String) : Currency {
+class CurrencyImpl(@Size(value = 3) currencyIsoCode: String) :
+    Currency {
 
     companion object {
 
@@ -30,8 +31,14 @@ class CurrencyImpl(@Size(value = 3) currencyIsoCode: String) : Currency {
     }
 
     private val code: String = currencyIsoCode.toUpperCase(Locale.getDefault())
-    private var javaCurrency: java.util.Currency = getCurrencyOrThrow(code)
-    private val numberFormat: NumberFormat = currencyFormatWithoutSymbol(javaCurrency)
+    private var javaCurrency: java.util.Currency =
+        getCurrencyOrThrow(
+            code
+        )
+    private val numberFormat: NumberFormat =
+        currencyFormatWithoutSymbol(
+            javaCurrency
+        )
 
     override fun name(): String = javaCurrency.displayName
 

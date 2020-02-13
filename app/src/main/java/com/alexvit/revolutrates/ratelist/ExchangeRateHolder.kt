@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.ratelist
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.alexvit.revolutrates.R
+import com.alexvit.revolutrates.currency.CurrencyFlagTextView
+import com.alexvit.revolutrates.currency.CurrencyFlagView
 
 class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapter.Listener) :
     RecyclerView.ViewHolder(itemView) {
@@ -20,7 +23,12 @@ class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapt
             parent: ViewGroup,
             listener: ExchangeRateAdapter.Listener
         ): ExchangeRateHolder =
-            ExchangeRateHolder(inflateView(parent), listener)
+            ExchangeRateHolder(
+                inflateView(
+                    parent
+                ),
+                listener
+            )
     }
 
     private val flag: CurrencyFlagView = itemView.findViewById<CurrencyFlagTextView>(R.id.flag)

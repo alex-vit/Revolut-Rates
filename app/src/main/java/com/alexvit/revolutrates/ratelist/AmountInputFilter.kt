@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.ratelist
 
 import android.text.InputFilter
 import android.text.Spanned

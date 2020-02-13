@@ -3,16 +3,20 @@ package com.alexvit.revolutrates
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alexvit.revolutrates.currency.Currency
+import com.alexvit.revolutrates.ratelist.ExchangeRateAdapter
+import com.alexvit.revolutrates.ratelist.ExchangeRateItem
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val exchangeRateAdapter = ExchangeRateAdapter(object :
-        ExchangeRateAdapter.Listener {
-        override fun onItemSelected(item: ExchangeRateItem) {
-            onItemClicked(item)
-        }
-    })
+    private val exchangeRateAdapter =
+        ExchangeRateAdapter(object :
+            ExchangeRateAdapter.Listener {
+            override fun onItemSelected(item: ExchangeRateItem) {
+                onItemClicked(item)
+            }
+        })
 
     private val items: MutableMap<String, ExchangeRateItem> = listOf(
         "sgd",
@@ -48,7 +52,12 @@ class MainActivity : AppCompatActivity() {
         "CZK",
         "DKK"
     )
-        .map { code -> code to ExchangeRateItem(Currency.from(code), 5.0) }
+        .map { code ->
+            code to ExchangeRateItem(
+                Currency.from(code),
+                5.0
+            )
+        }
         .toMap()
         .toMutableMap()
 
