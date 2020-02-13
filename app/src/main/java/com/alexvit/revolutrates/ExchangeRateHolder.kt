@@ -31,6 +31,7 @@ class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapt
                 item?.let(listener::onItemSelected)
             }
         }
+        filters = arrayOf(AmountInputFilter())
     }
     private var item: ExchangeRateItem? = null
 
