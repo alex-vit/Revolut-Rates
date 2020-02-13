@@ -1,19 +1,13 @@
 package com.alexvit.revolutrates
 
 import androidx.annotation.Size
-import androidx.annotation.StringRes
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 
-class CurrencyImpl(currencyIsoCode: String) : Currency {
+class CurrencyImpl(@Size(value = 3) currencyIsoCode: String) : Currency {
 
     companion object {
-
-        @Size(value = 3)
-        private fun validCode(code: String): String {
-            require(code.length == 3) { "Currency ISO code should be 3 letters. Got $code." }
-            return code.toUpperCase(Locale.getDefault())
-        }
 
         private fun getCurrencyOrThrow(@Size(value = 3) code: String): java.util.Currency {
             return try {
@@ -24,14 +18,20 @@ class CurrencyImpl(currencyIsoCode: String) : Currency {
                 throw IllegalArgumentException("Could not get currency $code.", cause)
             }
         }
+
+        private fun currencyFormatWithoutSymbol(javaCurrency: java.util.Currency): NumberFormat {
+            val numberFormat = NumberFormat.getCurrencyInstance()
+            numberFormat.currency = javaCurrency
+            (numberFormat as DecimalFormat).run {
+                decimalFormatSymbols = decimalFormatSymbols.apply { currencySymbol = "" }
+            }
+            return numberFormat
+        }
     }
 
-    @Size(value = 3)
-    private val code: String = validCode(currencyIsoCode)
+    private val code: String = currencyIsoCode.toUpperCase(Locale.getDefault())
     private var javaCurrency: java.util.Currency = getCurrencyOrThrow(code)
-    private val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance().apply {
-        currency = this@CurrencyImpl.javaCurrency
-    }
+    private val numberFormat: NumberFormat = currencyFormatWithoutSymbol(javaCurrency)
 
     override fun name(): String = javaCurrency.displayName
 
