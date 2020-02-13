@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Revolut Rates</string>
+    <string name="rates">Rates</string>
+    <string name="flag_default" translatable="false">&#x1F937;&#x200D;&#x2640;&#xFE0F;</string>
+    <string name="flag_eur" translatable="false">&#127466;&#127482;</string>
+    <string name="flag_usd" translatable="false">&#127482;&#127480;</string>
+</resources>
