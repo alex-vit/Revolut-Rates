@@ -1,8 +1,38 @@
 <resources>
     <string name="app_name">Revolut Rates</string>
+    <string name="amount">Amount</string>
     <string name="rates">Rates</string>
     <string name="flag_default" translatable="false">&#x1F937;&#x200D;&#x2640;&#xFE0F;</string>
-    <string name="flag_eur" translatable="false">&#127466;&#127482;</string>
-    <string name="flag_usd" translatable="false">&#127482;&#127480;</string>
-    <string name="amount">Amount</string>
+    <string name="flag_aud" translatable="false">&#x1F1E6;&#x1F1FA;</string>
+    <string name="flag_bgn" translatable="false">&#x1F1E7;&#x1F1EC;</string>
+    <string name="flag_brl" translatable="false">&#x1F1E7;&#x1F1F7;</string>
+    <string name="flag_cad" translatable="false">&#x1F1E8;&#x1F1E6;</string>
+    <string name="flag_chf" translatable="false">&#x1F1E8;&#x1F1ED;</string>
+    <string name="flag_cny" translatable="false">&#x1F1E8;&#x1F1F3;</string>
+    <string name="flag_czk" translatable="false">&#x1F1E8;&#x1F1FF;</string>
+    <string name="flag_dkk" translatable="false">&#x1F1E9;&#x1F1F0;</string>
+    <string name="flag_eur" translatable="false">&#x1F1EA;&#x1F1FA;</string>
+    <string name="flag_gbp" translatable="false">&#x1F1EC;&#x1F1E7;</string>
+    <string name="flag_hkd" translatable="false">&#x1F1ED;&#x1F1F0;</string>
+    <string name="flag_hrk" translatable="false">&#x1F1ED;&#x1F1F7;</string>
+    <string name="flag_huf" translatable="false">&#x1F1ED;&#x1F1FA;</string>
+    <string name="flag_idr" translatable="false">&#x1F1EE;&#x1F1E9;</string>
+    <string name="flag_ils" translatable="false">&#x1F1EE;&#x1F1F1;</string>
+    <string name="flag_inr" translatable="false">&#x1F1EE;&#x1F1F3;</string>
+    <string name="flag_isk" translatable="false">&#x1F1EE;&#x1F1F8;</string>
+    <string name="flag_jpy" translatable="false">&#x1F1EF;&#x1F1F5;</string>
+    <string name="flag_krw" translatable="false">&#x1F1F0;&#x1F1F7;</string>
+    <string name="flag_mxn" translatable="false">&#x1F1F2;&#x1F1FD;</string>
+    <string name="flag_myr" translatable="false">&#x1F1F2;&#x1F1FE;</string>
+    <string name="flag_nok" translatable="false">&#x1F1F3;&#x1F1F4;</string>
+    <string name="flag_nzd" translatable="false">&#x1F1F3;&#x1F1FF;</string>
+    <string name="flag_php" translatable="false">&#x1F1F5;&#x1F1ED;</string>
+    <string name="flag_pln" translatable="false">&#x1F1F5;&#x1F1F1;</string>
+    <string name="flag_ron" translatable="false">&#x1F1F7;&#x1F1F4;</string>
+    <string name="flag_rub" translatable="false">&#x1F1F7;&#x1F1FA;</string>
+    <string name="flag_sek" translatable="false">&#x1F1F8;&#x1F1EA;</string>
+    <string name="flag_sgd" translatable="false">&#x1F1F8;&#x1F1EC;</string>
+    <string name="flag_thb" translatable="false">&#x1F1F9;&#x1F1ED;</string>
+    <string name="flag_usd" translatable="false">&#x1F1FA;&#x1F1F8;</string>
+    <string name="flag_zar" translatable="false">&#x1F1FF;&#x1F1E6;</string>
 </resources>

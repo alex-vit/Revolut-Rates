@@ -14,7 +14,40 @@ class MainActivity : AppCompatActivity() {
         }
     })
 
-    private val items: MutableMap<String, ExchangeRateItem> = listOf("EUR", "USD")
+    private val items: MutableMap<String, ExchangeRateItem> = listOf(
+        "sgd",
+        "thb",
+        "zar",
+        "sek",
+        "pln",
+        "ron",
+        "rub",
+        "nok",
+        "nzd",
+        "PHP",
+        "krw",
+        "MXN",
+        "MYR",
+        "ils",
+        "inr",
+        "isk",
+        "jpy",
+        "HUF",
+        "idr",
+        "GBP",
+        "HKD",
+        "HRK",
+        "EUR",
+        "USD",
+        "AUD",
+        "bgn",
+        "brl",
+        "cad",
+        "chf",
+        "cny",
+        "CZK",
+        "DKK"
+    )
         .map { code -> code to ExchangeRateItem(Currency.from(code), 5.0) }
         .toMap()
         .toMutableMap()
