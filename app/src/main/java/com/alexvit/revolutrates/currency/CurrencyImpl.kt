@@ -5,10 +5,16 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 
-class CurrencyImpl(@Size(value = 3) currencyIsoCode: String) :
+class CurrencyImpl private constructor(@Size(value = 3) currencyIsoCode: String) :
     Currency {
 
     companion object {
+
+        fun from(currencyIsoCode: String): Currency = try {
+            CurrencyImpl(currencyIsoCode)
+        } catch (_: Throwable) {
+            FallbackCurrency(currencyIsoCode)
+        }
 
         private fun getCurrencyOrThrow(@Size(value = 3) code: String): java.util.Currency {
             return try {

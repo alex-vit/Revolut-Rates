@@ -3,7 +3,7 @@ package com.alexvit.revolutrates
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alexvit.revolutrates.currency.Currency
+import com.alexvit.revolutrates.currency.CurrencyImpl
 import com.alexvit.revolutrates.ratelist.ExchangeRateAdapter
 import com.alexvit.revolutrates.ratelist.ExchangeRateItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,11 +50,12 @@ class MainActivity : AppCompatActivity() {
         "chf",
         "cny",
         "CZK",
-        "DKK"
+        "DKK",
+        "OHAI"
     )
         .map { code ->
             code to ExchangeRateItem(
-                Currency.from(code),
+                CurrencyImpl.from(code),
                 5.0
             )
         }
