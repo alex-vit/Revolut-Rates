@@ -1,18 +1,18 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.rates
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.alexvit.revolutrates.currency.CurrencyImpl
-import com.alexvit.revolutrates.currency.data.RatesRepository
-import com.alexvit.revolutrates.ratelist.RateItem
+import com.alexvit.revolutrates.rates.data.RatesRepository
+import com.alexvit.revolutrates.rates.list.RateItem
 import io.reactivex.BackpressureStrategy
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 
-class MainViewModel(private val ratesRepository: RatesRepository) : ViewModel() {
+class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel() {
 
-    private var state = MainState()
-    private val stateSubject: BehaviorSubject<MainState> = BehaviorSubject.createDefault(state)
+    private var state = RatesState()
+    private val stateSubject: BehaviorSubject<RatesState> = BehaviorSubject.createDefault(state)
 
     private val subs = CompositeDisposable()
 
@@ -48,7 +48,9 @@ class MainViewModel(private val ratesRepository: RatesRepository) : ViewModel() 
             val items: MutableList<RateItem> = mutableListOf()
             val baseCode = state.topCurrencyCodes.first()
             val baseAmount = state.baseAmount
-            val baseItem = RateItem(CurrencyImpl(baseCode), baseAmount)
+            val baseItem = RateItem(
+                CurrencyImpl(baseCode), baseAmount
+            )
             items.add(baseItem)
             val topRates = state.topCurrencyCodes.drop(1)
                 .map { code -> code to (state.rates[code] ?: 1.0) }
@@ -59,7 +61,12 @@ class MainViewModel(private val ratesRepository: RatesRepository) : ViewModel() 
                 )
             })
             val rest = state.rates.filterKeys { code -> code !in state.topCurrencyCodes }
-                .map { (code, rate) -> RateItem(CurrencyImpl(code), rate * baseAmount) }
+                .map { (code, rate) ->
+                    RateItem(
+                        CurrencyImpl(code),
+                        rate * baseAmount
+                    )
+                }
             items.addAll(rest)
             items
         }
@@ -68,12 +75,18 @@ class MainViewModel(private val ratesRepository: RatesRepository) : ViewModel() 
         subs.add(
             ratesRepository.latestRates(state.topCurrencyCodes.first()).subscribe(
                 { rates -> setState { copy(rates = rates) } },
-                { error -> setState { MainState(error = error) } }
+                { error ->
+                    setState {
+                        RatesState(
+                            error = error
+                        )
+                    }
+                }
             )
         )
     }
 
-    private fun setState(update: MainState.() -> MainState) {
+    private fun setState(update: RatesState.() -> RatesState) {
         state = state.update()
         stateSubject.onNext(state)
     }
@@ -82,6 +95,6 @@ class MainViewModel(private val ratesRepository: RatesRepository) : ViewModel() 
         ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
-            MainViewModel(ratesRepository) as T
+            RatesViewModel(ratesRepository) as T
     }
 }

@@ -1,6 +1,6 @@
-package com.alexvit.revolutrates.currency.data
+package com.alexvit.revolutrates.rates.data
 
-import com.alexvit.revolutrates.currency.data.api.ApiRatesDataSource
+import com.alexvit.revolutrates.rates.data.api.ApiRatesDataSource
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 

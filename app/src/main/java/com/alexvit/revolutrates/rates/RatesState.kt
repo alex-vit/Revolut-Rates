@@ -1,6 +1,6 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.rates
 
-data class MainState(
+data class RatesState(
     val topCurrencyCodes: List<String> = listOf("EUR"),
     val baseAmount: Double = 1.0,
     val rates: Map<String, Double> = mapOf(),

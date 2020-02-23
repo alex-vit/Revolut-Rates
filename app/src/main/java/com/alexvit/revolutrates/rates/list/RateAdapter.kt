@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates.ratelist
+package com.alexvit.revolutrates.rates.list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -33,8 +33,19 @@ class RateAdapter(
         })
 
     init {
-        items.add(RateItem(Currency.default(), 1.0, 1))
-        items.addAll(Currency.allExceptDefault().map { RateItem(it, 0.0) })
+        items.add(
+            RateItem(
+                Currency.default(),
+                1.0,
+                1
+            )
+        )
+        items.addAll(Currency.allExceptDefault().map {
+            RateItem(
+                it,
+                0.0
+            )
+        })
     }
 
     fun setRates(rates: Map<String, Double>, baseAmount: Double) {
@@ -48,7 +59,10 @@ class RateAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RateHolder {
-        return RateHolder.create(parent, this)
+        return RateHolder.create(
+            parent,
+            this
+        )
     }
 
     override fun getItemCount(): Int {

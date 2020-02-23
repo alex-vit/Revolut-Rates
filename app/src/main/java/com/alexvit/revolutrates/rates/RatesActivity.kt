@@ -1,20 +1,22 @@
-package com.alexvit.revolutrates
+package com.alexvit.revolutrates.rates
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.alexvit.revolutrates.R
 import com.alexvit.revolutrates.app.App
 import com.alexvit.revolutrates.common.ActivityModule
-import com.alexvit.revolutrates.ratelist.RateAdapter
-import com.alexvit.revolutrates.ratelist.RateItem
-import com.alexvit.revolutrates.ratelist.RateListener
+import com.alexvit.revolutrates.rates.di.DaggerRatesComponent
+import com.alexvit.revolutrates.rates.list.RateAdapter
+import com.alexvit.revolutrates.rates.list.RateItem
+import com.alexvit.revolutrates.rates.list.RateListener
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_rates.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class RatesActivity : AppCompatActivity() {
 
     private val adapter by lazy {
         RateAdapter(object :
@@ -24,20 +26,23 @@ class MainActivity : AppCompatActivity() {
                 vm.itemClicked(item)
             }
 
-            override fun onAmountChanged(item: RateItem, newAmount: Double) {
+            override fun onAmountChanged(
+                item: RateItem,
+                newAmount: Double
+            ) {
                 vm.amountChanged(item, newAmount)
             }
         })
     }
     private val subs = CompositeDisposable()
     @Inject
-    lateinit var vm: MainViewModel
+    lateinit var vm: RatesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_rates)
 
-        DaggerMainComponent.builder()
+        DaggerRatesComponent.builder()
             .appComponent(App.component)
             .activityModule(ActivityModule(this))
             .build()

@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates.ratelist
+package com.alexvit.revolutrates.rates.list
 
 interface RateListener {
     fun onItemClicked(item: RateItem)

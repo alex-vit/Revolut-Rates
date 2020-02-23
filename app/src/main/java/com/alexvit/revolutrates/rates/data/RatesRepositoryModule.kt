@@ -1,8 +1,8 @@
-package com.alexvit.revolutrates.currency.data
+package com.alexvit.revolutrates.rates.data
 
 import com.alexvit.revolutrates.common.AppScope
-import com.alexvit.revolutrates.currency.data.api.ApiRatesDataSource
-import com.alexvit.revolutrates.currency.data.api.RatesApi
+import com.alexvit.revolutrates.rates.data.api.ApiRatesDataSource
+import com.alexvit.revolutrates.rates.data.api.RatesApi
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -14,11 +14,13 @@ class RatesRepositoryModule {
 
     @Provides
     @AppScope
-    fun repository(source: ApiRatesDataSource): RatesRepository = RatesRepository(source)
+    fun repository(source: ApiRatesDataSource): RatesRepository =
+        RatesRepository(source)
 
     @Provides
     @AppScope
-    fun apiSource(api: RatesApi): ApiRatesDataSource = ApiRatesDataSource(api)
+    fun apiSource(api: RatesApi): ApiRatesDataSource =
+        ApiRatesDataSource(api)
 
     @Provides
     @AppScope

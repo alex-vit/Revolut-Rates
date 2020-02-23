@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates.ratelist
+package com.alexvit.revolutrates.rates.list
 
 import android.content.Context
 import android.text.Editable
@@ -24,10 +24,13 @@ class RateHolder(itemView: View, private val listener: RateListener) :
         internal fun create(
             parent: ViewGroup,
             listener: RateListener
-        ): RateHolder = RateHolder(
-            inflateView(parent),
-            listener
-        )
+        ): RateHolder =
+            RateHolder(
+                inflateView(
+                    parent
+                ),
+                listener
+            )
     }
 
     private val flag: CurrencyFlagView = itemView.findViewById<CurrencyFlagTextView>(R.id.flag)

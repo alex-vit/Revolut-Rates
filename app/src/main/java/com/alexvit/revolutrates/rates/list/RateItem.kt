@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates.ratelist
+package com.alexvit.revolutrates.rates.list
 
 import androidx.recyclerview.widget.DiffUtil
 import com.alexvit.revolutrates.currency.Currency

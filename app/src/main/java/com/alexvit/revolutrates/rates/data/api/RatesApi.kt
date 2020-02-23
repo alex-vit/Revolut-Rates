@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates.currency.data.api
+package com.alexvit.revolutrates.rates.data.api
 
 import io.reactivex.Single
 import retrofit2.http.GET
