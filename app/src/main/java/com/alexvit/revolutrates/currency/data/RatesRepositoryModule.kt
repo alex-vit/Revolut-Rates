@@ -1,8 +1,8 @@
 package com.alexvit.revolutrates.currency.data
 
 import com.alexvit.revolutrates.common.AppScope
-import com.alexvit.revolutrates.currency.RatesApi
 import com.alexvit.revolutrates.currency.data.api.ApiRatesDataSource
+import com.alexvit.revolutrates.currency.data.api.RatesApi
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -22,7 +22,9 @@ class RatesRepositoryModule {
 
     @Provides
     @AppScope
-    fun ratesApi(retrofit: Retrofit): RatesApi = retrofit.create(RatesApi::class.java)
+    fun ratesApi(retrofit: Retrofit): RatesApi = retrofit.create(
+        RatesApi::class.java
+    )
 
     @Provides
     @AppScope

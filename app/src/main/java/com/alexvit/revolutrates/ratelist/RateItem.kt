@@ -3,19 +3,19 @@ package com.alexvit.revolutrates.ratelist
 import androidx.recyclerview.widget.DiffUtil
 import com.alexvit.revolutrates.currency.Currency
 
-data class ExchangeRateItem(val currency: Currency, val amount: Double) {
+data class RateItem(val currency: Currency, val amount: Double, val priority: Long = 0) {
 
     companion object {
-        internal val DIFF_CALLBACK: DiffUtil.ItemCallback<ExchangeRateItem> =
-            object : DiffUtil.ItemCallback<ExchangeRateItem>() {
+        internal val DIFF_CALLBACK: DiffUtil.ItemCallback<RateItem> =
+            object : DiffUtil.ItemCallback<RateItem>() {
                 override fun areItemsTheSame(
-                    oldItem: ExchangeRateItem,
-                    newItem: ExchangeRateItem
+                    oldItem: RateItem,
+                    newItem: RateItem
                 ): Boolean = oldItem.currency.code() == newItem.currency.code()
 
                 override fun areContentsTheSame(
-                    oldItem: ExchangeRateItem,
-                    newItem: ExchangeRateItem
+                    oldItem: RateItem,
+                    newItem: RateItem
                 ): Boolean = oldItem == newItem
             }
     }

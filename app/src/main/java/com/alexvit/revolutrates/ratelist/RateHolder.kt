@@ -1,6 +1,8 @@
 package com.alexvit.revolutrates.ratelist
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,7 @@ import com.alexvit.revolutrates.R
 import com.alexvit.revolutrates.currency.CurrencyFlagTextView
 import com.alexvit.revolutrates.currency.CurrencyFlagView
 
-class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapter.Listener) :
+class RateHolder(itemView: View, private val listener: RateListener) :
     RecyclerView.ViewHolder(itemView) {
 
     companion object {
@@ -21,14 +23,11 @@ class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapt
 
         internal fun create(
             parent: ViewGroup,
-            listener: ExchangeRateAdapter.Listener
-        ): ExchangeRateHolder =
-            ExchangeRateHolder(
-                inflateView(
-                    parent
-                ),
-                listener
-            )
+            listener: RateListener
+        ): RateHolder = RateHolder(
+            inflateView(parent),
+            listener
+        )
     }
 
     private val flag: CurrencyFlagView = itemView.findViewById<CurrencyFlagTextView>(R.id.flag)
@@ -38,23 +37,51 @@ class ExchangeRateHolder(itemView: View, private val listener: ExchangeRateAdapt
         setOnFocusChangeListener { _, focused ->
             if (focused) {
                 moveCursorToEnd()
-                item?.let(listener::onItemSelected)
             }
         }
+        addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+                if (hasFocus()) {
+                    editable?.toString()?.toDoubleOrNull()?.let { newAmount ->
+                        listener.onAmountChanged(item!!, newAmount)
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
         filters = arrayOf(AmountInputFilter())
     }
-    private var item: ExchangeRateItem? = null
+    private val clickableHack: View = itemView.findViewById(R.id.clickable_hack)
+    private var item: RateItem? = null
 
     init {
-        itemView.setOnClickListener { amount.focusAndShowKeyboard() }
+        itemView.setOnClickListener {
+            listener.onItemClicked(item!!)
+        }
+        clickableHack.setOnClickListener { listener.onItemClicked(item!!) }
     }
 
-    fun bind(item: ExchangeRateItem) {
-        this.item = item
+    fun bind(item: RateItem, focus: Boolean) {
+        if (this.item == item) return
+        if (focus) {
+            amount.post {
+                amount.focusAndShowKeyboard()
+            }
+        }
         flag.showFlagFor(item.currency)
         code.text = item.currency.code()
         name.text = item.currency.name()
-        amount.setText(item.currency.format(item.amount))
+        val formattedAmount = item.currency.format(item.amount)
+        if (!amount.hasFocus()) {
+            amount.setText(formattedAmount)
+        }
+        this.item = item
     }
 
     private fun EditText.moveCursorToEnd() {

@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates.currency
+package com.alexvit.revolutrates.currency.data.api
 
 import com.google.gson.annotations.SerializedName
 

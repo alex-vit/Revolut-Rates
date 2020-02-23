@@ -5,24 +5,19 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 
-class CurrencyImpl private constructor(@Size(value = 3) currencyIsoCode: String) :
+data class CurrencyImpl @Throws(UnknownCurrencyException::class) constructor(@Size(value = 3) private val currencyIsoCode: String) :
     Currency {
 
     companion object {
 
-        fun from(currencyIsoCode: String): Currency = try {
-            CurrencyImpl(currencyIsoCode)
-        } catch (_: Throwable) {
-            FallbackCurrency(currencyIsoCode)
-        }
-
+        @Throws(UnknownCurrencyException::class)
         private fun getCurrencyOrThrow(@Size(value = 3) code: String): java.util.Currency {
             return try {
                 java.util.Currency.getInstance(code)!!
             } catch (cause: NullPointerException) {
-                throw IllegalArgumentException("Could not get currency $code.", cause)
+                throw UnknownCurrencyException("Could not get currency $code.", cause)
             } catch (cause: NoClassDefFoundError) {
-                throw IllegalArgumentException("Could not get currency $code.", cause)
+                throw UnknownCurrencyException("Could not get currency $code.", cause)
             }
         }
 
