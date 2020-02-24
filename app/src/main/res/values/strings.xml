@@ -35,4 +35,5 @@
     <string name="flag_thb" translatable="false">&#x1F1F9;&#x1F1ED;</string>
     <string name="flag_usd" translatable="false">&#x1F1FA;&#x1F1F8;</string>
     <string name="flag_zar" translatable="false">&#x1F1FF;&#x1F1E6;</string>
+    <string name="retry">Retry</string>
 </resources>

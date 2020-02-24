@@ -49,7 +49,7 @@ class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel()
         loadRates()
     }
 
-    fun getState() = stateSubject.toFlowable(BackpressureStrategy.LATEST)
+    fun getState(): Flowable<RatesState> = stateSubject.toFlowable(BackpressureStrategy.LATEST)
 
     fun baseChanged(base: RateItem) {
         baseCurrency.onNext(base.currency.code())
@@ -58,6 +58,12 @@ class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel()
 
     fun baseAmountChanged(newAmount: Double) {
         baseAmount.onNext(newAmount)
+    }
+
+    fun retryClicked() {
+        if (state.error != null) {
+            loadRates()
+        }
     }
 
     override fun onCleared() {

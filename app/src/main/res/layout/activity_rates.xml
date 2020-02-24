@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     tools:context=".rates.RatesActivity">
 
     <TextView
@@ -23,13 +24,41 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_marginTop="16dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
+        app:layout_constraintTop_toBottomOf="@id/header"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/error_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/error_button"
+        app:layout_constraintLeft_toLeftOf="@id/left"
+        app:layout_constraintRight_toRightOf="@id/right"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Oops:\nSomething went wrong" />
+
+    <Button
+        android:id="@+id/error_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/retry"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/left"
+        app:layout_constraintRight_toRightOf="@id/right"
+        app:layout_constraintTop_toBottomOf="@id/error_label" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left"

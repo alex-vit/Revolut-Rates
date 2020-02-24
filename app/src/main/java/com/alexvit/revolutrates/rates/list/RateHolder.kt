@@ -19,18 +19,10 @@ class RateHolder(itemView: View, private val listener: RateListener) :
 
     companion object {
         private fun inflateView(parent: ViewGroup): View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_exchange_rate, parent, false)
+            .inflate(R.layout.item_rate, parent, false)
 
-        internal fun create(
-            parent: ViewGroup,
-            listener: RateListener
-        ): RateHolder =
-            RateHolder(
-                inflateView(
-                    parent
-                ),
-                listener
-            )
+        internal fun create(parent: ViewGroup, listener: RateListener): RateHolder =
+            RateHolder(inflateView(parent), listener)
     }
 
     private val flag: CurrencyFlagView = itemView.findViewById<CurrencyFlagTextView>(R.id.flag)
@@ -71,7 +63,6 @@ class RateHolder(itemView: View, private val listener: RateListener) :
     }
 
     fun bind(item: RateItem, focus: Boolean) {
-        if (this.item == item) return
         if (focus) {
             amount.post {
                 amount.focusAndShowKeyboard()
