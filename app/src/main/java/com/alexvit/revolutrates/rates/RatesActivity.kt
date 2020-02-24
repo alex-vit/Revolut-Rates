@@ -19,18 +19,19 @@ import javax.inject.Inject
 class RatesActivity : AppCompatActivity() {
 
     private val adapter by lazy {
-        RateAdapter(object :
-            RateListener {
+        RateAdapter(object : RateListener {
             override fun onItemClicked(item: RateItem) {
-                recycler_view.scrollToPosition(0)
-                vm.itemClicked(item)
+                vm.baseChanged(item)
+                recycler_view.postDelayed({
+                    recycler_view.scrollToPosition(0)
+                }, 100)
             }
 
             override fun onAmountChanged(
                 item: RateItem,
                 newAmount: Double
             ) {
-                vm.amountChanged(item, newAmount)
+                vm.baseAmountChanged(newAmount)
             }
         })
     }
@@ -55,12 +56,7 @@ class RatesActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        subs.add(vm.getState().subscribe { state ->
-            adapter.setRates(
-                state.rates,
-                state.baseAmount
-            )
-        })
+        subs.add(vm.getState().subscribe { state -> adapter.setItems(state.items) })
     }
 
     override fun onPause() {

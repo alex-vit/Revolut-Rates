@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit
 class ApiRatesDataSource(private val api: RatesApi) {
 
     @SchedulerSupport(SchedulerSupport.IO)
-    fun latestRates(baseCurrencyCode: String): Flowable<Map<String, Double>> =
+    fun latestRates(baseCurrencyCode: String): Flowable<RatesResponse> =
         Flowable.interval(0, 1, TimeUnit.SECONDS)
             .flatMapSingle {
                 api.latestRates(baseCurrencyCode).subscribeOn(Schedulers.io())
-                    .map(RatesResponse::currencyCodeToRate)
+//                    .map(RatesResponse::currencyCodeToRate)
             }
             .onBackpressureLatest()
 

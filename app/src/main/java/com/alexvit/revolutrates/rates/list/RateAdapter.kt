@@ -4,14 +4,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
 import androidx.recyclerview.widget.SortedListAdapterCallback
-import com.alexvit.revolutrates.currency.Currency
 
 class RateAdapter(
     private val listener: RateListener
-) : RecyclerView.Adapter<RateHolder>(),
-    RateListener {
+) : RecyclerView.Adapter<RateHolder>() {
 
-    private val items: SortedList<RateItem> =
+    private val sortedList: SortedList<RateItem> =
         SortedList(RateItem::class.java, object : SortedListAdapterCallback<RateItem>(this) {
             override fun areItemsTheSame(item1: RateItem, item2: RateItem): Boolean {
                 return item1.currency.code() == item2.currency.code()
@@ -32,53 +30,25 @@ class RateAdapter(
 
         })
 
-    init {
-        items.add(
-            RateItem(
-                Currency.default(),
-                1.0,
-                1
-            )
-        )
-        items.addAll(Currency.allExceptDefault().map {
-            RateItem(
-                it,
-                0.0
-            )
-        })
-    }
-
-    fun setRates(rates: Map<String, Double>, baseAmount: Double) {
-        items.beginBatchedUpdates()
-        for (i in 0 until items.size()) {
-            val item = items[i]
-            val rate = rates[item.currency.code()] ?: continue
-            items.updateItemAt(i, item.copy(amount = rate * baseAmount))
+    fun setItems(items: Map<String, RateItem>) {
+        sortedList.beginBatchedUpdates()
+        val newItems = items.toMutableMap()
+        for (i in 0 until sortedList.size()) {
+            val code = sortedList.get(i).currency.code()
+            val newItem = newItems[code] ?: continue
+            sortedList.updateItemAt(i, newItem)
+            newItems.remove(code)
         }
-        items.endBatchedUpdates()
+        newItems.values.forEach { item -> sortedList.add(item) }
+        sortedList.endBatchedUpdates()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RateHolder {
-        return RateHolder.create(
-            parent,
-            this
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RateHolder =
+        RateHolder.create(parent, listener)
 
-    override fun getItemCount(): Int {
-        return items.size()
-    }
+    override fun getItemCount(): Int = sortedList.size()
 
     override fun onBindViewHolder(holder: RateHolder, position: Int) {
-        holder.bind(items[position], position == 0)
-    }
-
-    override fun onItemClicked(item: RateItem) {
-        listener.onItemClicked(item)
-        items.updateItemAt(items.indexOf(item), item.copy(priority = System.currentTimeMillis()))
-    }
-
-    override fun onAmountChanged(item: RateItem, newAmount: Double) {
-        listener.onAmountChanged(item, newAmount)
+        holder.bind(sortedList[position], position == 0)
     }
 }
