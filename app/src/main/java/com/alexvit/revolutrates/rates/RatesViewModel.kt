@@ -13,6 +13,29 @@ import io.reactivex.subjects.BehaviorSubject
 
 class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel() {
 
+    companion object {
+        private fun updateItems(
+            oldItems: Map<String, RateItem>,
+            rates: RatesResponse,
+            baseAmount: Double
+        ): Map<String, RateItem> {
+            val newItems = oldItems.toMutableMap()
+            val newBase = newItems.getValue(rates.baseCurrencyCode)
+                .copy(
+                    amount = baseAmount,
+                    priority = System.currentTimeMillis()
+                )
+            newItems[rates.baseCurrencyCode] = newBase
+            rates.currencyCodeToRate.entries.forEach { (code, rate) ->
+                val newAmount = baseAmount * rate
+                val newItem = newItems[code]?.copy(amount = newAmount)
+                    ?: RateItem(CurrencyImpl(code), newAmount)
+                newItems[code] = newItem
+            }
+            return newItems
+        }
+    }
+
     private var state = RatesState()
     private val stateSubject: BehaviorSubject<RatesState> = BehaviorSubject.createDefault(state)
     private val baseCurrency: BehaviorSubject<String> =
@@ -47,23 +70,9 @@ class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel()
             baseCurrencyChanges()
                 .switchMap(ratesRepository::latestRates)
                 .switchMap(::ratesWithBaseAmount)
+                .map { (rates, baseAmount) -> updateItems(state.items, rates, baseAmount) }
                 .subscribe(
-                    { (rates, baseAmount) ->
-                        val newItems = state.items.toMutableMap()
-                        val newBase = newItems.getValue(rates.baseCurrencyCode)
-                            .copy(
-                                amount = baseAmount,
-                                priority = System.currentTimeMillis()
-                            )
-                        newItems[rates.baseCurrencyCode] = newBase
-                        rates.currencyCodeToRate.entries.forEach { (code, rate) ->
-                            val newAmount = baseAmount * rate
-                            val newItem = newItems[code]?.copy(amount = newAmount)
-                                ?: RateItem(CurrencyImpl(code), newAmount)
-                            newItems[code] = newItem
-                        }
-                        setState { copy(items = newItems, error = null) }
-                    },
+                    { setState { copy(items = it, error = null) } },
                     { setState { copy(error = it) } }
                 )
         )
