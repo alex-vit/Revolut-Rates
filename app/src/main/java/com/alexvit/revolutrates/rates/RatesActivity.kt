@@ -22,9 +22,7 @@ class RatesActivity : AppCompatActivity() {
         RateAdapter(object : RateListener {
             override fun onItemClicked(item: RateItem) {
                 vm.baseChanged(item)
-                recycler_view.postDelayed({
-                    recycler_view.scrollToPosition(0)
-                }, 100)
+                recycler_view.postDelayed({ recycler_view.scrollToPosition(0) }, 100)
             }
 
             override fun onAmountChanged(

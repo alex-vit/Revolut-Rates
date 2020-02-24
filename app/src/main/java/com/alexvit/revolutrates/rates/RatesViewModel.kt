@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.alexvit.revolutrates.currency.CurrencyImpl
 import com.alexvit.revolutrates.rates.data.RatesRepository
+import com.alexvit.revolutrates.rates.data.api.RatesResponse
 import com.alexvit.revolutrates.rates.list.RateItem
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 
@@ -42,16 +44,11 @@ class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel()
 
     private fun loadRates() {
         subs.add(
-            baseCurrency.toFlowable(BackpressureStrategy.LATEST)
-                .distinctUntilChanged()
+            baseCurrencyChanges()
                 .switchMap(ratesRepository::latestRates)
-                .switchMap { rates ->
-                    baseAmount.toFlowable(BackpressureStrategy.LATEST)
-                        .distinctUntilChanged()
-                        .map { amount -> Pair(amount, rates) }
-                }
+                .switchMap(::ratesWithBaseAmount)
                 .subscribe(
-                    { (baseAmount, rates) ->
+                    { (rates, baseAmount) ->
                         val newItems = state.items.toMutableMap()
                         val newBase = newItems.getValue(rates.baseCurrencyCode)
                             .copy(
@@ -71,6 +68,17 @@ class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel()
                 )
         )
     }
+
+    private fun baseCurrencyChanges(): Flowable<String> = baseCurrency
+        .toFlowable(BackpressureStrategy.LATEST)
+        .distinctUntilChanged()
+
+    private fun baseAmountChanges(): Flowable<Double> = baseAmount
+        .toFlowable(BackpressureStrategy.LATEST)
+        .distinctUntilChanged()
+
+    private fun ratesWithBaseAmount(rates: RatesResponse): Flowable<Pair<RatesResponse, Double>> =
+        baseAmountChanges().map { amount -> Pair(rates, amount) }
 
     private fun setState(update: RatesState.() -> RatesState) {
         state = state.update()
