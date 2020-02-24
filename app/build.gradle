@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+if (!getGradle().getStartParameter().getTaskRequests().toString().contains("Test")) {
+    apply plugin: 'kotlin-allopen'
+}
+
 android {
     compileSdkVersion 29
     compileOptions {
