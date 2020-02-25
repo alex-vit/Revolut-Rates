@@ -1,10 +1,10 @@
 package com.alexvit.revolutrates.currency
 
 interface Currency {
+
     companion object {
         const val DEFAULT_CURRENCY_CODE = "EUR"
-        fun default(): Currency = CurrencyImpl(DEFAULT_CURRENCY_CODE)
-        fun allExceptDefault(): List<Currency> = listOf(
+        val SUPPORTED_CURRENCY_CODES = setOf(
             "AUD",
             "BGN",
             "BRL",
@@ -13,6 +13,7 @@ interface Currency {
             "CNY",
             "CZK",
             "DKK",
+            "EUR",
             "GBP",
             "HKD",
             "HRK",
@@ -36,7 +37,9 @@ interface Currency {
             "THB",
             "USD",
             "ZAR"
-        ).map(::CurrencyImpl)
+        )
+
+        fun default(): Currency = CurrencyImpl(DEFAULT_CURRENCY_CODE)
     }
 
     fun name(): String

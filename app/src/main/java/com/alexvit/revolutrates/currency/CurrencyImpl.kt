@@ -13,7 +13,9 @@ data class CurrencyImpl @Throws(UnknownCurrencyException::class) constructor(@Si
         @Throws(UnknownCurrencyException::class)
         private fun getCurrencyOrThrow(@Size(value = 3) code: String): java.util.Currency {
             return try {
-                java.util.Currency.getInstance(code)!!
+                java.util.Currency.getInstance(code.toUpperCase(Locale.getDefault()))!!
+            } catch (cause: IllegalArgumentException) {
+                throw UnknownCurrencyException("Could not get currency $code.", cause)
             } catch (cause: NullPointerException) {
                 throw UnknownCurrencyException("Could not get currency $code.", cause)
             } catch (cause: NoClassDefFoundError) {
@@ -33,9 +35,7 @@ data class CurrencyImpl @Throws(UnknownCurrencyException::class) constructor(@Si
 
     private val code: String = currencyIsoCode.toUpperCase(Locale.getDefault())
     private var javaCurrency: java.util.Currency =
-        getCurrencyOrThrow(
-            code
-        )
+        getCurrencyOrThrow(currencyIsoCode)
     private val numberFormat: NumberFormat =
         currencyFormatWithoutSymbol(
             javaCurrency
