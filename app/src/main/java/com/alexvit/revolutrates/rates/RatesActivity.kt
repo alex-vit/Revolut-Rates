@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.alexvit.revolutrates.R
 import com.alexvit.revolutrates.app.App
 import com.alexvit.revolutrates.common.ActivityModule
-import com.alexvit.revolutrates.common.ErrorView
+import com.alexvit.revolutrates.common.errorview.ErrorPresenter
+import com.alexvit.revolutrates.common.errorview.ErrorView
 import com.alexvit.revolutrates.rates.di.DaggerRatesComponent
 import com.alexvit.revolutrates.rates.list.RateAdapter
 import com.alexvit.revolutrates.rates.list.RateItem
@@ -39,7 +40,7 @@ class RatesActivity : AppCompatActivity() {
     private val subs = CompositeDisposable()
     @Inject
     lateinit var vm: RatesViewModel
-    private lateinit var errorView: ErrorView
+    private lateinit var errorPresenter: ErrorPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +55,11 @@ class RatesActivity : AppCompatActivity() {
         (recycler_view.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.adapter = adapter
-        errorView = ErrorView(root, object : ErrorView.Listener {
-            override fun buttonClicked() {
+        errorPresenter = ErrorPresenter(RatesErrorView(root, object : ErrorView.Listener {
+            override fun onRetry() {
                 vm.retryClicked()
             }
-        })
+        }))
     }
 
     override fun onResume() {
@@ -79,14 +80,14 @@ class RatesActivity : AppCompatActivity() {
     }
 
     private fun showItems(items: Map<String, RateItem>) {
-        errorView.hide()
+        errorPresenter.hide()
         recycler_view.visibility = VISIBLE
         adapter.setItems(items)
     }
 
     private fun showError(error: Throwable) {
         recycler_view.visibility = GONE
-        errorView.showError(error)
+        errorPresenter.showError(error)
     }
 
 }
