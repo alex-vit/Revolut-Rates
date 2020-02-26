@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
-import androidx.recyclerview.widget.SortedListAdapterCallback
 
 class RateAdapter(
     private val listener: RateListener
@@ -27,25 +26,7 @@ class RateAdapter(
     }
 
     private val sortedList: SortedList<RateItem> =
-        SortedList(RateItem::class.java, object : SortedListAdapterCallback<RateItem>(this) {
-            override fun areItemsTheSame(item1: RateItem, item2: RateItem): Boolean {
-                return item1.currency.code() == item2.currency.code()
-            }
-
-            override fun compare(o1: RateItem, o2: RateItem): Int {
-                val diff = (o2.priority - o1.priority).toInt()
-                return if (diff != 0) {
-                    diff
-                } else {
-                    o1.currency.code().compareTo(o2.currency.code())
-                }
-            }
-
-            override fun areContentsTheSame(oldItem: RateItem, newItem: RateItem): Boolean {
-                return oldItem == newItem
-            }
-
-        })
+        SortedList(RateItem::class.java, SortByPriorityThenNameCallback(this))
 
     fun setItems(items: Map<String, RateItem>) {
         upsert(sortedList, items)
