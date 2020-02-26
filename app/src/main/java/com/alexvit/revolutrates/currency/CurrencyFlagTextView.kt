@@ -3,6 +3,7 @@ package com.alexvit.revolutrates.currency
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.TextView
+import androidx.annotation.VisibleForTesting
 import com.alexvit.revolutrates.R
 
 class CurrencyFlagTextView @JvmOverloads constructor(
@@ -11,7 +12,8 @@ class CurrencyFlagTextView @JvmOverloads constructor(
     CurrencyFlagView {
 
     companion object {
-        private val CODE_TO_FLAG = mapOf(
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        val CODE_TO_FLAG = mapOf(
             "AUD" to R.string.flag_aud,
             "BGN" to R.string.flag_bgn,
             "BRL" to R.string.flag_brl,
