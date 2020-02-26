@@ -1,5 +1,6 @@
 package com.alexvit.revolutrates.rates
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.alexvit.revolutrates.currency.CurrencyImpl
@@ -14,7 +15,8 @@ import io.reactivex.subjects.BehaviorSubject
 class RatesViewModel(private val ratesRepository: RatesRepository) : ViewModel() {
 
     companion object {
-        private fun updateItems(
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        fun updateItems(
             oldItems: Map<String, RateItem>,
             rates: RatesResponse,
             baseAmount: Double
