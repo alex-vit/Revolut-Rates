@@ -8,7 +8,7 @@ import io.reactivex.FlowableTransformer
 import timber.log.Timber
 
 internal class RatesErrorPresenter(
-    private val view: RatesErrorView,
+    view: RatesErrorView,
     parentState: Flowable<RatesState>,
     lifecycle: Lifecycle
 ) : UiPresenter<RatesState, RatesErrorState, RatesErrorView>(

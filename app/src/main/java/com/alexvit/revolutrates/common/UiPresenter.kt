@@ -9,9 +9,9 @@ import io.reactivex.FlowableTransformer
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class UiPresenter<ParentState : Any, State : Any, View : UiView>(
-    private val view: View,
+    protected val view: View,
     private val parentState: Flowable<ParentState>,
-    lifecycle: Lifecycle? = null
+    lifecycle: Lifecycle?
 ) : LifecycleObserver {
 
     private val subs = CompositeDisposable()
