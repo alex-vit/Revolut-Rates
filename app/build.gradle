@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-if (getGradle().getStartParameter().getTaskRequests().toString().contains("Test")) {
+if (getGradle().getStartParameter().getTaskRequests().toString().toLowerCase().contains("test")) {
     apply plugin: 'kotlin-allopen'
     allOpen {
         annotation("com.alexvit.revolutrates.common.OpenForTests")

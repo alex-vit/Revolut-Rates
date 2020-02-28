@@ -4,29 +4,37 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.alexvit.revolutrates.R
-import com.alexvit.revolutrates.common.errorview.ErrorView
+import com.alexvit.revolutrates.common.OpenForTests
+import com.alexvit.revolutrates.common.UiEvent
+import com.alexvit.revolutrates.common.UiView
+import io.reactivex.Observer
 
-class RatesErrorView(container: View, listener: ErrorView.Listener) : ErrorView {
+@OpenForTests
+class RatesErrorView(
+    container: View,
+    eventConsumer: Observer<UiEvent>
+) : UiView(eventConsumer) {
+
+    object Clicked : UiEvent
 
     private val label: TextView = container.findViewById(R.id.error_label)
     private val button: Button = container.findViewById(R.id.error_button)
 
     init {
-        button.setOnClickListener { listener.onRetry() }
+        button.setOnClickListener { emit(Clicked) }
     }
 
-    override fun show() {
+    fun show() {
         label.visibility = View.VISIBLE
         button.visibility = View.VISIBLE
     }
 
-    override fun hide() {
+    fun hide() {
         label.visibility = View.GONE
         button.visibility = View.GONE
     }
 
-    override fun setErrorMessage(error: String) {
-        label.text = error
+    fun setErrorMessage(errorMessage: String) {
+        label.text = errorMessage
     }
-
 }
