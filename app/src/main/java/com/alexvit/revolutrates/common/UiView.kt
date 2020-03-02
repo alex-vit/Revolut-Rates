@@ -1,13 +1,16 @@
 package com.alexvit.revolutrates.common
 
+import android.view.View
 import io.reactivex.Observer
 
-abstract class UiView(
-    private val eventConsumer: Observer<UiEvent>
-) {
+interface UiView {
 
-    protected fun emit(event: UiEvent) {
-        eventConsumer.onNext(event)
+    fun getView(): View
+
+    fun getEventConsumer(): Observer<UiEvent>
+
+    fun emit(event: UiEvent) {
+        getEventConsumer().onNext(event)
     }
 
 }
