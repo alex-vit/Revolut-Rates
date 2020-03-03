@@ -16,19 +16,27 @@ import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class UiPresenterTest {
+class LifecycleUiPresenterTest {
 
-    private open class View(eventConsumer: Observer<UiEvent>) : UiView(eventConsumer) {
+    private open class View(override val eventConsumer: Observer<UiEvent>) : UiView {
+        override fun getView(): android.view.View {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
         internal open fun setInt(x: Int) {}
     }
 
-    private class Presenter(view: View, parentState: Flowable<Int>, lifecycle: Lifecycle) :
-        UiPresenter<Int, Int, View>(view, parentState, lifecycle) {
-        override fun onState(newState: Int) {
-            view.setInt(newState)
+    private class Presenter(
+        override val view: View,
+        override val parentState: Flowable<Int>,
+        lifecycle: Lifecycle
+    ) :
+        LifecycleUiPresenter<View, Int, Int>(view, parentState, lifecycle) {
+        override fun onState(state: Int) {
+            view.setInt(state)
         }
 
-        override fun stateTransformer(): FlowableTransformer<Int, Int> =
+        override fun getStateTransformer(): FlowableTransformer<Int, Int> =
             FlowableTransformer { upstream -> upstream.map { it * 2 } }
     }
 
@@ -47,12 +55,6 @@ class UiPresenterTest {
     @Test
     fun `observes lifecycle when created`() {
         verify(lifecycle).addObserver(presenter)
-    }
-
-    @Test(expected = IllegalStateException::class)
-    fun `calling start twice is an error`() {
-        presenter.start()
-        presenter.start()
     }
 
     @Test

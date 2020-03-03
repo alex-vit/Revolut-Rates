@@ -1,46 +1,31 @@
 package com.alexvit.revolutrates.common
 
 import androidx.annotation.CallSuper
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
-abstract class UiPresenter<ParentState : Any, State : Any, View : UiView>(
-    protected val view: View,
-    private val parentState: Flowable<ParentState>,
-    lifecycle: Lifecycle?
-) : LifecycleObserver {
+interface UiPresenter<View : UiView, ParentState : Any, State : Any> {
 
-    private val subs = CompositeDisposable()
-    private var started = false
+    val view: View
+    val parentState: Flowable<ParentState>
+    var subscription: Disposable
 
-    init {
-        lifecycle?.addObserver(this)
+    @CallSuper
+    fun start() {
+        subscription.dispose()
+        subscription = parentState
+            .compose(getStateTransformer())
+            .subscribe(::onState)
     }
 
     @CallSuper
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    open fun start() {
-        if (!started) {
-            subs.add(parentState.compose(stateTransformer()).subscribe(::onState))
-            started = true
-        } else {
-            throw IllegalStateException("start called when already started")
-        }
+    fun stop() {
+        subscription.dispose()
     }
 
-    @CallSuper
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    open fun stop() {
-        subs.clear()
-        started = false
-    }
+    fun onState(state: State)
 
-    protected abstract fun onState(newState: State)
-
-    protected abstract fun stateTransformer(): FlowableTransformer<ParentState, State>
+    fun getStateTransformer(): FlowableTransformer<ParentState, State>
 
 }

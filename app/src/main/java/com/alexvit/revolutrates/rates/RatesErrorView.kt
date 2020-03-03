@@ -11,8 +11,8 @@ import io.reactivex.Observer
 
 @OpenForTests
 class RatesErrorView(
-    private val container: View,
-    private val eventConsumer: Observer<UiEvent>
+    container: View,
+    override val eventConsumer: Observer<UiEvent>
 ) : UiView {
 
     object Clicked : UiEvent
@@ -23,10 +23,6 @@ class RatesErrorView(
     init {
         button.setOnClickListener { emit(Clicked) }
     }
-
-    override fun getView(): View = container
-
-    override fun getEventConsumer(): Observer<UiEvent> = eventConsumer
 
     fun show() {
         label.visibility = View.VISIBLE

@@ -2,7 +2,7 @@ package com.alexvit.revolutrates.rates
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
-import com.alexvit.revolutrates.common.UiPresenter
+import com.alexvit.revolutrates.common.LifecycleUiPresenter
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
 import timber.log.Timber
@@ -11,7 +11,7 @@ internal class RatesErrorPresenter(
     view: RatesErrorView,
     parentState: Flowable<RatesState>,
     lifecycle: Lifecycle
-) : UiPresenter<RatesState, RatesErrorState, RatesErrorView>(
+) : LifecycleUiPresenter<RatesErrorView, RatesState, RatesErrorState>(
     view,
     parentState,
     lifecycle
@@ -24,18 +24,18 @@ internal class RatesErrorPresenter(
                 .joinToString(":\n")
     }
 
-    override fun onState(newState: RatesErrorState) {
-        Timber.d("WTF $newState")
-        when (newState.errorMessage) {
+    override fun onState(state: RatesErrorState) {
+        Timber.d("WTF $state")
+        when (state.errorMessage) {
             null -> view.hide()
             else -> {
                 view.show()
-                view.setErrorMessage(newState.errorMessage)
+                view.setErrorMessage(state.errorMessage)
             }
         }
     }
 
-    override fun stateTransformer(): FlowableTransformer<RatesState, RatesErrorState> =
+    override fun getStateTransformer(): FlowableTransformer<RatesState, RatesErrorState> =
         FlowableTransformer { upstream ->
             upstream
                 .map {
