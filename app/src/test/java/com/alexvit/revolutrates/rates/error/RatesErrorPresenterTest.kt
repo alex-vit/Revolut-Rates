@@ -1,7 +1,8 @@
-package com.alexvit.revolutrates.rates
+package com.alexvit.revolutrates.rates.error
 
 import androidx.lifecycle.Lifecycle
-import com.alexvit.revolutrates.rates.RatesErrorPresenter.Companion.formatError
+import com.alexvit.revolutrates.rates.RatesState
+import com.alexvit.revolutrates.rates.error.RatesErrorPresenter.Companion.formatError
 import io.reactivex.BackpressureStrategy.LATEST
 import io.reactivex.subjects.PublishSubject
 import org.junit.After
@@ -24,7 +25,11 @@ class RatesErrorPresenterTest {
 
     @Before
     fun setUp() {
-        presenter = RatesErrorPresenter(view, parentState.toFlowable(LATEST), lifecycle)
+        presenter = RatesErrorPresenter(
+            view,
+            parentState.toFlowable(LATEST),
+            lifecycle
+        )
         presenter.start()
     }
 

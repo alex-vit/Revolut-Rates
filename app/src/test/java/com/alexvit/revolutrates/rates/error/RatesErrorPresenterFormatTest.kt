@@ -1,4 +1,4 @@
-package com.alexvit.revolutrates.rates
+package com.alexvit.revolutrates.rates.error
 
 import org.junit.Assert
 import org.junit.Test

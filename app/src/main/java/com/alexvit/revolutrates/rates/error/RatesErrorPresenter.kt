@@ -1,11 +1,11 @@
-package com.alexvit.revolutrates.rates
+package com.alexvit.revolutrates.rates.error
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import com.alexvit.revolutrates.common.LifecycleUiPresenter
+import com.alexvit.revolutrates.rates.RatesState
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
-import timber.log.Timber
 
 internal class RatesErrorPresenter(
     view: RatesErrorView,
@@ -25,7 +25,6 @@ internal class RatesErrorPresenter(
     }
 
     override fun onState(state: RatesErrorState) {
-        Timber.d("WTF $state")
         when (state.errorMessage) {
             null -> view.hide()
             else -> {
@@ -41,7 +40,7 @@ internal class RatesErrorPresenter(
                 .map {
                     RatesErrorState(
                         it.error?.let(
-                            ::formatError
+                            Companion::formatError
                         )
                     )
                 }

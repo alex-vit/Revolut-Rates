@@ -19,10 +19,6 @@ import org.mockito.junit.MockitoJUnitRunner
 class LifecycleUiPresenterTest {
 
     private open class View(override val eventConsumer: Observer<UiEvent>) : UiView {
-        override fun getView(): android.view.View {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
         internal open fun setInt(x: Int) {}
     }
 
